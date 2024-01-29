@@ -6,6 +6,7 @@ import {
   ServerError,
 } from "../helpers/apiErros";
 import { countBooyar, somePoints } from "../utils";
+import { squardType } from "../types";
 
 export default class Squards {
   async create(req: Request, res: Response) {
@@ -76,9 +77,17 @@ export default class Squards {
   }
 
   async list(req: Request, res: Response) {
-    const listSquards = await new Database().listSquards();
+    const listSquards: squardType[] = await new Database().listSquards();
 
     if (!listSquards.length) return res.status(200).json([]);
+
+    const players = await new Database().listPlayer();
+
+    listSquards.forEach((squard) => {
+      squard.players = players.filter(
+        (player) => player.squard_id === squard.id
+      );
+    });
 
     listSquards.sort((a, b) => {
       return a.points < b.points ? 1 : a.points > b.points ? -1 : 0;
@@ -88,7 +97,6 @@ export default class Squards {
 
   async delete(req: Request, res: Response) {
     const { id } = req.params;
-    console.log("aqui");
 
     if (!id) {
       throw new BadRequestError("informe uma equipe !");

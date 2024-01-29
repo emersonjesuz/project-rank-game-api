@@ -14,11 +14,8 @@ export type playerType = {
   id: number;
   name: string;
   kills?: number;
-  squard?: string;
-  position?: number;
-  bermuda?: number;
-  kalahari?: number;
-  purgatorio?: number;
-  active?: boolean;
-  squard_id: number;
+  bermuda_kills: number[];
+  kalahari_kills: number[];
+  purgatorio_kills: number[];
+  squard_id?: number;
 };

@@ -90,7 +90,7 @@ describe("testing list squads", () => {
 
 describe("testing delete squads", () => {
   it("delete squard", async () => {
-    const response = await request(server).delete("/delete/31");
+    const response = await request(server).delete("/delete/33");
 
     expect(response.body).toHaveProperty("id");
     expect(response.status).toBe(200);
@@ -147,5 +147,69 @@ describe("testing create player", () => {
 });
 
 describe("testing edit player", () => {
-  it("edit player");
+  it("edit player", async () => {
+    const player = {
+      name: "maria",
+      bermuda_kills: 1,
+      kalahari_kills: 1,
+      purgatorio_kills: 1,
+    };
+    const response = await request(server).put("/player/edit/1").send(player);
+
+    expect(response.body).toHaveProperty("id");
+    expect(response.status).toBe(201);
+  });
+
+  it("not found player", async () => {
+    const player = {
+      name: "maria",
+      bermuda_kills: 1,
+      kalahari_kills: 1,
+      purgatorio_kills: 1,
+    };
+    const response = await request(server).put("/player/edit/100").send(player);
+
+    expect(response.body).toHaveProperty("message", "jogador não encontrado !");
+    expect(response.status).toBe(404);
+  });
+
+  it("kills invalid", async () => {
+    const player = {
+      name: "paulo",
+      bermuda_kills: -1,
+      kalahari_kills: 1,
+      purgatorio_kills: 1,
+    };
+    const response = await request(server).put("/player/edit/100").send(player);
+
+    expect(response.body).toHaveProperty(
+      "message",
+      "A quantidade de  abates do jogador esta invalida!"
+    );
+    expect(response.status).toBe(400);
+  });
+});
+
+describe("testing list players", () => {
+  it("list players", async () => {
+    const response = await request(server).get("/player/list");
+
+    expect(response.status).toBe(200);
+  });
+});
+
+describe("testing delete players", () => {
+  it("delete players", async () => {
+    const response = await request(server).delete("/player/delete/16");
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("id");
+  });
+
+  it("not found players", async () => {
+    const response = await request(server).delete("/player/delete/15");
+
+    expect(response.status).toBe(404);
+    expect(response.body).toHaveProperty("message", "jogador não encontrado");
+  });
 });

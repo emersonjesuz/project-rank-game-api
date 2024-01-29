@@ -4,7 +4,7 @@ import {
   NotFoundError,
   ServerError,
 } from "../../helpers/apiErros";
-import { squardType } from "../../types";
+import { playerType, squardType } from "../../types";
 
 const prisma = new PrismaClient();
 
@@ -52,15 +52,7 @@ export default class Database {
   }
 
   async deleteSquard(id: number) {
-    await prisma.players
-      .deleteMany({
-        where: { squard_id: id },
-      })
-      .catch(() => {
-        throw new ServerError(
-          "não foi possivel excluir os jogadores da equipe"
-        );
-      });
+    this.deletePlayer(undefined, id);
 
     return await prisma.squards.delete({ where: { id } }).catch(() => {
       throw new ServerError("não foi possivel excluir a equipe");
@@ -81,7 +73,7 @@ export default class Database {
   }
 
   async getPlayer(id?: number, name?: string) {
-    if (!id && !name) throw new BadRequestError("informe uma  equipe !");
+    if (!id && !name) throw new BadRequestError("informe o jogador !");
 
     if (id) {
       return await prisma.players.findUnique({ where: { id } }).catch(() => {
@@ -107,5 +99,38 @@ export default class Database {
     return await prisma.players.findMany().catch(() => {
       throw new ServerError("não foi possivel buscar a lista de jogadores !");
     });
+  }
+
+  async editPlayer(player: playerType) {
+    const { name, bermuda_kills, kalahari_kills, purgatorio_kills, kills, id } =
+      player;
+
+    if (!id) throw new BadRequestError("informe um jogador!");
+
+    return await prisma.players
+      .update({
+        data: { bermuda_kills, kalahari_kills, purgatorio_kills, kills, name },
+        where: { id },
+      })
+      .catch(() => {
+        throw new ServerError("não foi possivel editar os dados do jogador !");
+      });
+  }
+
+  async deletePlayer(id?: number, squard_id?: number) {
+    if (id) {
+      return await prisma.players.delete({ where: { id } }).catch(() => {
+        throw new ServerError("não foi possivel excluir o jogadores ");
+      });
+    }
+    return await prisma.players
+      .deleteMany({
+        where: { squard_id },
+      })
+      .catch(() => {
+        throw new ServerError(
+          "não foi possivel excluir os jogadores da equipe"
+        );
+      });
   }
 }

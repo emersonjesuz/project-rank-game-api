@@ -16,5 +16,8 @@ router.post(
   new PlayerMidlleware().create,
   new Player().create
 );
+router.put("/player/edit/:id", new PlayerMidlleware().edit, new Player().edit);
+router.get("/player/list", new Player().list);
+router.delete("/player/delete/:id", new Player().delete);
 
 export default router;

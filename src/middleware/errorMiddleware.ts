@@ -8,7 +8,7 @@ export const errorMiddleware = async (
   next: NextFunction
 ) => {
   const statusCode = err.statusCode ?? 500;
-  console.log(err);
+
   if (
     statusCode === 401 ||
     err.message === "invalid token" ||
