@@ -5,9 +5,9 @@ CREATE TABLE "Squards" (
     "booyar" INTEGER NOT NULL DEFAULT 0,
     "points" INTEGER NOT NULL DEFAULT 0,
     "kills" INTEGER NOT NULL DEFAULT 0,
-    "bermuda_booyar" INTEGER[],
-    "purgatorio_booyar" INTEGER[],
-    "kalahari_booyar" INTEGER[],
+    "bermuda_position" INTEGER[],
+    "purgatorio_position" INTEGER[],
+    "kalahari_position" INTEGER[],
 
     CONSTRAINT "Squards_pkey" PRIMARY KEY ("id")
 );
@@ -20,7 +20,7 @@ CREATE TABLE "Players" (
     "bermuda_kills" INTEGER[],
     "purgatorio_kills" INTEGER[],
     "kalahari_kills" INTEGER[],
-    "kills" INTEGER NOT NULL,
+    "kills" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "Players_pkey" PRIMARY KEY ("id")
 );
