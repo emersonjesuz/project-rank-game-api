@@ -8,6 +8,7 @@ export const errorMiddleware = async (
   next: NextFunction
 ) => {
   const statusCode = err.statusCode ?? 500;
+  console.log(err.message);
 
   if (
     statusCode === 401 ||

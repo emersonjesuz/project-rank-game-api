@@ -3,7 +3,7 @@ export type squardType = {
   name: string;
   booyar: number;
   points: number;
-  kills: number;
+  kills?: number;
   bermuda_position: number[];
   purgatorio_position: number[];
   kalahari_position: number[];

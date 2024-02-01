@@ -21,35 +21,30 @@ export default class Squards {
     if (!createSquard)
       throw new ServerError("opss estamos com problemas internos !");
 
-    return res.status(201).json(createSquard);
+    return res.status(201).json({ ...createSquard, players: [] });
   }
 
   async edit(req: Request, res: Response) {
-    const {
-      name,
-      kills,
-      bermuda_position,
-      kalahari_position,
-      purgatorio_position,
-    } = req.body;
+    const { name, bermuda_position, kalahari_position, purgatorio_position } =
+      req.body;
     const { id } = req.params;
 
     const getSquard = await new Database().getSquard(+id);
 
     if (!getSquard) throw new NotFoundError("equipe não encontrada!");
 
-    const countPoints = somePoints(
-      [bermuda_position, kalahari_position, purgatorio_position],
-      kills
-    );
+    const positions = [
+      +bermuda_position,
+      +kalahari_position,
+      +purgatorio_position,
+    ];
+
+    const countPoints = somePoints(positions);
 
     if (!countPoints && countPoints !== 0)
       throw new ServerError("opss estamos com problemas internos !");
 
-    const newBooyar = countBooyar(
-      [bermuda_position, kalahari_position, purgatorio_position],
-      getSquard.booyar
-    );
+    const newBooyar = countBooyar(positions, getSquard.booyar);
 
     if (!newBooyar && newBooyar !== 0)
       throw new ServerError("opss estamos com problemas internos !");
@@ -57,14 +52,13 @@ export default class Squards {
     const squard = {
       id: +id,
       name,
-      kills,
       booyar: newBooyar,
       points: getSquard.points + countPoints,
-      bermuda_position: [...getSquard.bermuda_position, bermuda_position],
-      kalahari_position: [...getSquard.kalahari_position, kalahari_position],
+      bermuda_position: [...getSquard.bermuda_position, +bermuda_position],
+      kalahari_position: [...getSquard.kalahari_position, +kalahari_position],
       purgatorio_position: [
         ...getSquard.purgatorio_position,
-        purgatorio_position,
+        +purgatorio_position,
       ],
     };
 

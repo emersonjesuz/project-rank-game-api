@@ -31,18 +31,32 @@ export default class Database {
       });
     }
   }
-  async editSquard(squard: squardType) {
-    if (!squard.id || !squard.name)
-      throw new BadRequestError("informe os dados corretamente !");
+  async editSquard(
+    squard?: squardType,
+    updateKill?: { id: number; kills: number; points: number }
+  ) {
+    if (squard) {
+      if (!squard.id || !squard.name)
+        throw new BadRequestError("informe os dados corretamente !");
 
-    return await prisma.squards
-      .update({
-        data: squard,
-        where: { id: squard.id },
-      })
-      .catch(() => {
-        throw new ServerError("não foi possivel editar a equipe");
-      });
+      return await prisma.squards
+        .update({
+          data: squard,
+          where: { id: squard.id },
+        })
+        .catch((e) => {
+          throw new ServerError("não foi possivel editar a equipe");
+        });
+    } else if (updateKill) {
+      return await prisma.squards
+        .update({
+          data: { kills: updateKill.kills, points: updateKill.points },
+          where: { id: updateKill.id },
+        })
+        .catch((e) => {
+          throw new ServerError("não foi possivel editar a equipe");
+        });
+    }
   }
 
   async listSquards() {
