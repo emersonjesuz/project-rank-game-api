@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const squards_1 = __importDefault(require("../middleware/squards"));
+const Squards_1 = __importDefault(require("../controllers/Squards"));
+const players_1 = __importDefault(require("../middleware/players"));
+const Players_1 = __importDefault(require("../controllers/Players"));
+const router = (0, express_1.Router)();
+router.post("/create", new squards_1.default().create, new Squards_1.default().create);
+router.put("/edit/:id", new squards_1.default().edit, new Squards_1.default().edit);
+router.get("/list", new Squards_1.default().list);
+router.delete("/delete/:id", new Squards_1.default().delete);
+router.post("/player/create", new players_1.default().create, new Players_1.default().create);
+router.put("/player/edit/:id", new players_1.default().edit, new Players_1.default().edit);
+router.get("/player/list", new Players_1.default().list);
+router.delete("/player/delete/:id", new Players_1.default().delete);
+exports.default = router;
