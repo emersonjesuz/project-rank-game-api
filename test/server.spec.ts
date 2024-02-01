@@ -1,4 +1,4 @@
-import server from "./server";
+import server from "../server";
 import request from "supertest";
 
 describe("testing  create squard", () => {
