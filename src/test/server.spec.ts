@@ -1,5 +1,6 @@
 import server from "../server";
 import request from "supertest";
+import { expect } from "@jest/globals";
 
 describe("testing  create squard", () => {
   const name = "mata gato" + Math.random();

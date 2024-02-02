@@ -13,6 +13,6 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "test/server.spec.ts"]
+  "include": ["src/**/*", "src/test/server.spec.ts"],
+  "exclude": ["node_modules", "dist"]
 }
