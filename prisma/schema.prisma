@@ -8,26 +8,25 @@ generator client {
   binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
-model Squards {
-  id                  Int    @id @default(autoincrement())
-  name                String @unique
-  booyar              Int    @default(0)
-  points              Int    @default(0)
-  kills               Int    @default(0)
+model Squads {
+  id                  Int       @id @default(autoincrement())
+  name                String    @unique
+  booyar              Int       @default(0)
+  points              Int       @default(0)
+  kills               Int       @default(0)
   bermuda_position    Int[]
   purgatorio_position Int[]
   kalahari_position   Int[]
-
-  Players Players[]
+  Players             Players[]
 }
 
 model Players {
-  id               Int     @id @default(autoincrement())
-  name             String  @unique
-  squard           Squards @relation(fields: [squard_id], references: [id])
-  squard_id        Int
+  id               Int    @id @default(autoincrement())
+  name             String @unique
+  squad            Squads @relation(fields: [squad_id], references: [id])
+  squad_id         Int
   bermuda_kills    Int[]
   purgatorio_kills Int[]
   kalahari_kills   Int[]
-  kills            Int     @default(0)
+  kills            Int    @default(0)
 }
